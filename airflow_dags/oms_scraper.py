@@ -21,7 +21,7 @@ import pandas as pd
 dag = DAG(
     dag_id = 'oms_scraper',
     start_date = datetime(2023,6,12),
-    schedule = '0 0 * * *',
+    schedule = '0 */3 * * *',
     max_active_runs = 1,
     catchup = False,
     default_args = {}

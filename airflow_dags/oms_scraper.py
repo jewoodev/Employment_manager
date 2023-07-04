@@ -104,7 +104,7 @@ def get_post_info_jumpit(**context):
 
 
     df = pd.DataFrame(columns=['id', 'company', 'position', 'title', 'stack', 'main_business', 'qualification', 'preferences', 'career', 'address', 'site', 'date'])
-    date = datetime.today().strftime("%Y-%m-%d")
+    date = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
     # 테스트용으로 마지막으로 넘어감
     category_count = 2
     while category_count <= 22:
@@ -157,7 +157,7 @@ def get_post_info_jumpit(**context):
     hook = get_S3_connection()
     hook.load_string(
         string_data=df.to_csv(encoding='utf8', index=False),
-        key='data/{date}/jumpit_ai.csv'.format(date=date),
+        key='data/{date}/jumpit_en.csv'.format(date=date),
         bucket_name='oh-my-stack',
         replace=True
     )
@@ -241,7 +241,7 @@ def get_post_info_programmers(**context):
     prim_num = 0
     page_count = 1
     df = pd.DataFrame(columns=['id', 'company', 'position', 'title', 'stack', 'main_business', 'qualification', 'preferences', 'career', 'address', 'site', 'date'])
-    date = datetime.today().strftime("%Y-%m-%d")
+    date = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
 
     last_page_str = driver.find_element(By.XPATH, "/html/body/div[2]/div/div[3]/ul/li[8]/span").text
     last_page_str = last_page_str.replace(" ", "")
@@ -305,7 +305,7 @@ def get_post_info_programmers(**context):
     hook = get_S3_connection()
     hook.load_string(
         string_data=df.to_csv(encoding='utf8', index=False),
-        key='data/{date}/programmers_ai.csv'.format(date=date),
+        key='data/{date}/programmers_en.csv'.format(date=date),
         bucket_name='oh-my-stack',
         replace=True
     )

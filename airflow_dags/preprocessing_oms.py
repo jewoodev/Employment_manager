@@ -112,7 +112,7 @@ def upload_df_to_rds(*, table_name=None, schema=None, df=None):
     return df
 
 
-def get_daily_en(**context):
+def get_recent_en(**context):
     hook = get_S3_connection()
 
     hook.download_file('data/programmers_en.csv', bucket_name='oh-my-stack', local_path='/var/lib/airflow/temp',
@@ -130,9 +130,9 @@ def get_daily_en(**context):
         replace=True
     )
 
-get_daily_en = PythonOperator(
-task_id = 'get_daily_en',
-    python_callable = get_daily_en,
+get_recent_en = PythonOperator(
+task_id = 'get_recent_en',
+    python_callable = get_recent_en,
     params = {},
     dag = dag
 )
@@ -1568,4 +1568,4 @@ remove_temp_obj = BashOperator(
 
 
 
-get_daily_en >> career_erd_separator >> preprocess_address >> company_normalization >> position_and_recruit >> stack_normalization >> split_rows >> incremental_update >> remove_temp_obj
+get_recent_en >> career_erd_separator >> preprocess_address >> company_normalization >> position_and_recruit >> stack_normalization >> split_rows >> incremental_update >> remove_temp_obj

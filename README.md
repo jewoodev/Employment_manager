@@ -46,5 +46,5 @@
 
 <hr>
 
-프로젝트 설명, 회고록: https://jewoodev.github.io/posts/employment_manager/
+> 프로젝트 설명, 회고록: https://jewoodev.github.io/posts/employment_manager/
 

@@ -62,26 +62,25 @@ def update_production_table(*, df=None, table_name=None):
     sql = """USE production;"""
     cur.execute(sql)
 
-    sql = f"""TRUNCATE TABLE {table_name};"""
-    cur.execute(sql)
-
-    table_columns = ",".join(df.columns)
-    placeholders = ",".join(['%s'] * len(df.columns))
-
-    sql = f"""INSERT INTO {table_name} ({table_columns}) VALUES ({placeholders})"""
-
-    params = [tuple(record) for record in df.to_numpy()]
-
     try:
         cur.executemany(sql, params)
+        sql = """SET FOREIGN_KEY_CHECKS = 1;"""
+        cur.execute(sql)
+        sql = f"""TRUNCATE TABLE {table_name};"""
+        cur.execute(sql)
+
+        table_columns = ",".join(df.columns)
+        placeholders = ",".join(['%s'] * len(df.columns))
+
+        sql = f"""INSERT INTO {table_name} ({table_columns}) VALUES ({placeholders})"""
+
+        params = [tuple(record) for record in df.to_numpy()]
+        con.commit()
     except:
         sql = """ROLLBACK;"""
         cur.execute(sql)
 
-    sql = """SET FOREIGN_KEY_CHECKS = 1;"""
-    cur.execute(sql)
-
-    con.commit()
+    
 
 def upload_df_to_rds(*, table_name=None, schema=None, df=None):
     rds_hook, con, cur = get_RDS_connection()
@@ -92,17 +91,17 @@ def upload_df_to_rds(*, table_name=None, schema=None, df=None):
 
     sql = f"""USE {schema};"""
     cur.execute(sql)
-    sql = f"""TRUNCATE TABLE {schema}.{table_name};"""
-    cur.execute(sql)
-
-    df_columns = ",".join(df.columns)
-    placeholders = ",".join(['%s'] * len(df.columns))
-
-    sql = f"""INSERT INTO {schema}.{table_name} ({df_columns}) VALUES ({placeholders});"""
-
-    params = [tuple(record) for record in df.to_numpy()]
 
     try:
+        sql = f"""TRUNCATE TABLE {schema}.{table_name};"""
+        cur.execute(sql)
+
+        df_columns = ",".join(df.columns)
+        placeholders = ",".join(['%s'] * len(df.columns))
+
+        sql = f"""INSERT INTO {schema}.{table_name} ({df_columns}) VALUES ({placeholders});"""
+
+        params = [tuple(record) for record in df.to_numpy()]
         cur.executemany(sql, params)
     except:
         sql = """ROLLBACK;"""
@@ -162,14 +161,13 @@ def career_erd_separator(**context):
     career_columns = ",".join(df2.columns)
     query_param = ",".join(['%s'] * len(df2.columns))
 
-    sql = """TRUNCATE TABLE career;"""
-    cur.execute(sql)
-
-    sql = f"""INSERT INTO career ({career_columns}) VALUES ({query_param});"""
-
-    params = [tuple(record) for record in df2.to_numpy()]
-
     try:
+        sql = """TRUNCATE TABLE career;"""
+        cur.execute(sql)
+
+        sql = f"""INSERT INTO career ({career_columns}) VALUES ({query_param});"""
+
+        params = [tuple(record) for record in df2.to_numpy()]
         cur.executemany(sql, params)
     except:
         sql = """ROLLBACK;"""
@@ -234,14 +232,13 @@ def career_erd_separator(**context):
     career_separated_columns = ",".join(df.columns)
     placeholders = ",".join(['%s'] * len(df.columns))
 
-    sql = """TRUNCATE TABLE career_separated;"""
-    cur.execute(sql)
-
-    sql = f"""INSERT INTO career_separated ({career_separated_columns}) VALUES ({placeholders});"""
-
-    params = [tuple(record) for record in df.to_numpy()]
-
     try:
+        sql = """TRUNCATE TABLE career_separated;"""
+        cur.execute(sql)
+
+        sql = f"""INSERT INTO career_separated ({career_separated_columns}) VALUES ({placeholders});"""
+
+        params = [tuple(record) for record in df.to_numpy()]
         cur.executemany(sql, params)
     except:
         sql = """ROLLBACK;"""
@@ -1190,14 +1187,13 @@ def company_normalization(**context):
         sql = """USE production;"""
         cur.execute(sql)
 
-        sql = """TRUNCATE TABLE main_company;"""
-        cur.execute(sql)
-
-        sql = f"""INSERT INTO main_company ({main_company_df_columns}) VALUES ({placeholders});"""
-
-        params = [tuple(record) for record in main_company_df.to_numpy()]
-
         try:
+            sql = """TRUNCATE TABLE main_company;"""
+            cur.execute(sql)
+
+            sql = f"""INSERT INTO main_company ({main_company_df_columns}) VALUES ({placeholders});"""
+
+            params = [tuple(record) for record in main_company_df.to_numpy()]
             cur.executemany(sql, params)
         except:
             sql = """ROLLBACK;"""
@@ -1218,14 +1214,13 @@ def company_normalization(**context):
         company_address_df_columns = ",".join(company_df.columns)
         placeholders = ",".join(['%s'] * len(company_df.columns))
 
-        sql = """TRUNCATE TABLE company;"""
-        cur.execute(sql)
-
-        sql = f"""INSERT INTO company ({company_address_df_columns}) VALUES ({placeholders});"""
-
-        params = [tuple(record) for record in company_df.to_numpy()]
-
         try:
+            sql = """TRUNCATE TABLE company;"""
+            cur.execute(sql)
+
+            sql = f"""INSERT INTO company ({company_address_df_columns}) VALUES ({placeholders});"""
+
+            params = [tuple(record) for record in company_df.to_numpy()]
             cur.executemany(sql, params)
         except:
             sql = """ROLLBACK;"""
@@ -1248,14 +1243,14 @@ def company_normalization(**context):
         company_separated_df = company_separated_df.replace(np.nan, None)
         company_separated_df = company_separated_df.replace('nan', None)
 
-        sql = """TRUNCATE TABLE company_separated;"""
-        cur.execute(sql)
-
-        sql = f"""INSERT INTO company_separated ({company_separated_df_columns}) VALUES ({placeholders});"""
-
-        params = [tuple(record) for record in company_separated_df.to_numpy()]
 
         try:
+            sql = """TRUNCATE TABLE company_separated;"""
+            cur.execute(sql)
+
+            sql = f"""INSERT INTO company_separated ({company_separated_df_columns}) VALUES ({placeholders});"""
+
+            params = [tuple(record) for record in company_separated_df.to_numpy()]
             cur.executemany(sql, params)
         except:
             sql = """ROLLBACK;"""
@@ -1318,21 +1313,19 @@ def position_and_recruit(**context):
         # job ad table update
         sql = """SET FOREIGN_KEY_CHECKS = 0;"""
         cur.execute(sql)
-
-        sql = """TRUNCATE TABLE recruit;"""
-        cur.execute(sql)
-
-        sql = """INSERT INTO recruit (id, company_id, position_id, title, recruit_stacks, main_business, qualification, career_id, preferences, site, date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
-
-        params = []
-
-        for i in range(len(df)):
-            record = df.iloc[i]
-            params.append((record['id'], record['company_id'], record['position_id'], record['title'], record['stack'],
-                           record['main_business'], record['qualification'], record['career_id'], record['preferences'],
-                           record['site'], record['date']))
-
         try:
+            sql = """TRUNCATE TABLE recruit;"""
+            cur.execute(sql)
+
+            sql = """INSERT INTO recruit (id, company_id, position_id, title, recruit_stacks, main_business, qualification, career_id, preferences, site, date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+
+            params = []
+
+            for i in range(len(df)):
+                record = df.iloc[i]
+                params.append((record['id'], record['company_id'], record['position_id'], record['title'], record['stack'],
+                            record['main_business'], record['qualification'], record['career_id'], record['preferences'],
+                            record['site'], record['date']))
             cur.executemany(sql, params)
         except:
             sql = """ROLLBACK;"""
@@ -1340,19 +1333,20 @@ def position_and_recruit(**context):
 
 
 
-        # position table update
-        sql = """TRUNCATE TABLE position;"""
-        cur.execute(sql)
-
-        sql = """INSERT INTO position (id, position) VALUES (%s, %s);"""
-
-        params = []
-
-        for i in range(len(position_df)):
-            record = position_df.iloc[i]
-            params.append((record['id'], record['position']))
+        
 
         try:
+            # position table update
+            sql = """TRUNCATE TABLE position;"""
+            cur.execute(sql)
+
+            sql = """INSERT INTO position (id, position) VALUES (%s, %s);"""
+
+            params = []
+
+            for i in range(len(position_df)):
+                record = position_df.iloc[i]
+                params.append((record['id'], record['position']))
             cur.executemany(sql, params)
         except:
             sql = """ROLLBACK;"""
@@ -1425,50 +1419,53 @@ def stack_normalization(**context):
     # update recruit stack column
     sql = f"""START TRANSACTION;"""
     cur.execute(sql)
-    sql = f"""USE production;"""
-    cur.execute(sql)
-    sql = f"""TRUNCATE TABLE recruit;"""
-    cur.execute(sql)
-
-    table_columns = ",".join(stack_arr_df.columns)
-    placeholders = ",".join(['%s'] * len(stack_arr_df.columns))
-
-    sql = f"""INSERT INTO recruit ({table_columns}) VALUES ({placeholders})"""
-    params = [tuple(record) for record in stack_arr_df.to_numpy()]
 
     try:
+        sql = f"""USE production;"""
+        cur.execute(sql)
+        sql = f"""TRUNCATE TABLE recruit;"""
+        cur.execute(sql)
+
+        table_columns = ",".join(stack_arr_df.columns)
+        placeholders = ",".join(['%s'] * len(stack_arr_df.columns))
+
+        sql = f"""INSERT INTO recruit ({table_columns}) VALUES ({placeholders})"""
+        params = [tuple(record) for record in stack_arr_df.to_numpy()]
         cur.executemany(sql, params)
+        sql = f"""COMMIT;"""
+        cur.execute(sql)
     except Exception as e:
         print(f"\n\n Failed to update recruit stack column because of {e}\n\n")
         sql = f"""ROLLBACK;"""
         cur.execute(sql)
 
-    sql = f"""COMMIT;"""
-    cur.execute(sql)
+    
 
     # update total_stack table
     sql = f"""START TRANSACTION;"""
     cur.execute(sql)
-    sql = f"""USE production;"""
-    cur.execute(sql)
-    sql = f"""TRUNCATE TABLE total_stack;"""
-    cur.execute(sql)
-
-    table_columns = ",".join(total_stack_df.columns)
-    placeholders = ",".join(['%s'] * len(total_stack_df.columns))
-
-    sql = f"""INSERT INTO total_stack ({table_columns}) VALUES ({placeholders})"""
-    params = [tuple(record) for record in total_stack_df.to_numpy()]
+    
 
     try:
+        sql = f"""USE production;"""
+        cur.execute(sql)
+        sql = f"""TRUNCATE TABLE total_stack;"""
+        cur.execute(sql)
+
+        table_columns = ",".join(total_stack_df.columns)
+        placeholders = ",".join(['%s'] * len(total_stack_df.columns))
+
+        sql = f"""INSERT INTO total_stack ({table_columns}) VALUES ({placeholders})"""
+        params = [tuple(record) for record in total_stack_df.to_numpy()]
         cur.executemany(sql, params)
+        sql = f"""COMMIT;"""
+        cur.execute(sql)
     except Exception as e:
         print(f"\n\n Failed to update total_stack table because of {e}\n\n")
         sql = f"""ROLLBACK;"""
         cur.execute(sql)
 
-    sql = f"""COMMIT;"""
-    cur.execute(sql)
+    
 
 stack_normalization = PythonOperator(
     task_id = 'stack_normalization',

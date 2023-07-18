@@ -1,4 +1,4 @@
-# Employment manager
+# Oh My Stack
 > 2003년 이래로 최대 규모의 '구직을 포기한 청년 층'이 자신이 지원하기에 적합한 기업을 찾을 수 있도록 돕는 웹 서비스
 
 ## 프로젝트 기간
@@ -46,5 +46,5 @@
 
 <hr>
 
-> 프로젝트 설명, 회고록: https://jewoodev.github.io/posts/employment_manager/
+> 프로젝트 설명, 회고록: https://jewoodev.github.io/posts/ohmystack/
 

@@ -36,13 +36,11 @@
 
 ## 시스템 아키텍쳐
 
-![image](https://github.com/jewoodev/employment_manager/assets/105477856/1f805301-aacb-4d04-a868-ce2467ec615b)
+<img src="https://github.com/jewoodev/employment_manager/assets/105477856/1f805301-aacb-4d04-a868-ce2467ec615b" alt="image" style="zoom:50%;" />
 
 ## 웹 페이지 미리보기
 
-![image](https://github.com/jewoodev/employment_manager/assets/105477856/5aa4e99a-4e81-4e5e-b8a0-0bf83172c92f)
-
-<hr
+<img src="https://github.com/jewoodev/employment_manager/assets/105477856/5aa4e99a-4e81-4e5e-b8a0-0bf83172c92f" alt="image" style="zoom:50%;" />
 
 <hr>
 

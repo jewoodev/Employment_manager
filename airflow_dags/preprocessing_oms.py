@@ -1107,10 +1107,6 @@ def preprocess_address(**context):
         return df
 
     try:
-        # DB 연결
-
-        # 테이블 이름과 데이터프레임을 가져올 함수 호출
-
         # 주소 전처리
         df = change_address_cityname(df)
         df = change_address_main(df)

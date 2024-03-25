@@ -44,5 +44,5 @@
 
 <hr>
 
-> 프로젝트 설명, 회고록: https://jewoodev.github.io/posts/ohmystack/
+> 프로젝트 설명, 회고록: [링크](https://jewoodev.github.io/posts/ohmystack_%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8_%ED%9A%8C%EA%B3%A0/)
 

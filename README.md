@@ -36,7 +36,7 @@
 
 ## 시스템 아키텍쳐
 
-<img src="https://github.com/jewoodev/employment_manager/assets/105477856/1f805301-aacb-4d04-a868-ce2467ec615b" alt="image" style="zoom:50%;" />
+<img src="https://github.com/jewoodev/Oh_My_Stack/blob/main/etc/ohmystack.png?raw=true" alt="image" style="zoom:50%;" />
 
 ## 웹 페이지 미리보기
 
